@@ -1,0 +1,7 @@
+---
+- name: NvimInstallation
+  hosts: all 
+  roles:
+      - setUpYADMAndGit
+  become: yes
+  become_method: sudo

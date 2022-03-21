@@ -1,0 +1,6 @@
+---
+# vars file for setUpYADMAndGit
+
+yadm_push_url: https://github.com/Piii-thagorus/dotfiles
+git_user_name: Piii-thagorus
+git_email: molapo.lm@outlook
