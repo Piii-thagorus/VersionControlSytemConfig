@@ -6,6 +6,5 @@
 
   handlers:
       - include: roles/setUpYADMAndGit/handlers/main.yml
-
   become: yes
   become_method: sudo
