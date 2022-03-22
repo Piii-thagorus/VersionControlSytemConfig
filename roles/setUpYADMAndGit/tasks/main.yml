@@ -1,0 +1,32 @@
+---
+# tasks file for setUpYADMAndGit
+
+- block:
+
+    - name: Installing YADM
+      ansible.builtin.apt:
+          force_apt_get: yes
+          name: yadm
+          state: present
+      register: yadm_ouptut
+      notify:
+          - Gather package facts 
+          - Add yadm pushUrl
+
+      tags:
+          - install_yadm
+
+- block: 
+    - name: Installing Git
+      ansible.builtin.apt:
+          force_apt_get: yes
+          name: git
+          state: latest 
+      register: git_output
+      notify:
+          - Gather package facts 
+          - Configure gitconfig     
+      tags:
+          - install_git
+    
+

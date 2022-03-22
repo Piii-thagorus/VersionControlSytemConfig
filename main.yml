@@ -1,7 +1,11 @@
 ---
-- name: NvimInstallation
+- name: setUpYADMAndGit 
   hosts: all 
   roles:
       - setUpYADMAndGit
+
+  handlers:
+      - include: roles/setUpYADMAndGit/handlers/main.yml
+
   become: yes
   become_method: sudo

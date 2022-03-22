@@ -1,0 +1,20 @@
+---
+- name: Gather package facts
+  ansible.builtin.package_facts:
+        manager: auto
+
+
+- name: Configure gitconfig 
+  ansible.builtin.template:
+         src: gitconfig.j2
+         dest: "/home/piiithagorus/.gitconfig"
+         force: yes
+         mode: 0767
+  when: " 'git' in ansible_facts.packages"
+
+
+- name: Add yadm pushUrl   
+  ansible.builtin.command:
+    cmd: 
+        yadm remote origin {{yadm_push_url}}
+    when: " 'yadm' in ansible_facts.packages"
