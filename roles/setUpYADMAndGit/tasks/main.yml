@@ -1,20 +1,29 @@
 ---
 # tasks file for setUpYADMAndGit
 
-- block:
+- name: Gather package facts
+  ansible.builtin.package_facts:
+        manager: auto
 
+
+- block: 
     - name: Installing YADM
       ansible.builtin.apt:
           force_apt_get: yes
           name: yadm
           state: present
       register: yadm_ouptut
-      notify:
-          - Gather package facts 
-          - Add yadm pushUrl
-
       tags:
           - install_yadm
+
+    - name: Add yadm pushUrl   
+      community.general.git_config:
+            name: remote.origin.pushurl
+            scope: local
+            repo: /home/piiithagorus/.local/share/yadm/repo.git/
+            value: "{{yadm_push_url}}"
+      when: " 'yadm' in ansible_facts.packages"
+
 
 - block: 
     - name: Installing Git
@@ -23,10 +32,13 @@
           name: git
           state: latest 
       register: git_output
-      notify:
-          - Gather package facts 
-          - Configure gitconfig     
       tags:
           - install_git
-    
 
+    - name: Configure gitconfig 
+      ansible.builtin.template:
+         src: gitconfig.j2
+         dest: "/home/piiithagorus/.gitconfig"
+         force: yes
+         mode: 0767
+      when: " 'git' in ansible_facts.packages"
