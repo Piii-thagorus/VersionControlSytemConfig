@@ -4,6 +4,4 @@
   roles:
       - setUpYADMAndGit
 
-  handlers:
-      - include: roles/setUpYADMAndGit/handlers/main.yml
   

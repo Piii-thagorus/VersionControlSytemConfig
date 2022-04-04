@@ -7,7 +7,7 @@
 
 - block: 
     - name: Installing YADM
-      ansible.builtin.package:
+      ansible.builtin.apt:
           force_apt_get: yes
           name: yadm
           state: present
@@ -19,9 +19,6 @@
       stat:
           path: /home/piiithagorus/.local/share/yadm/repo.git/
       register: yadm_repo_found
-
-    - debug:
-        var: yadm_repo_found
 
     - name: Clone yadm repo
       ansible.builtin.shell:
