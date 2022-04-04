@@ -5,16 +5,29 @@
   ansible.builtin.package_facts:
         manager: auto
 
-
 - block: 
     - name: Installing YADM
-      ansible.builtin.apt:
+      ansible.builtin.package:
           force_apt_get: yes
           name: yadm
           state: present
       register: yadm_ouptut
       tags:
           - install_yadm
+
+    - name: Check if yadm repo exits
+      stat:
+          path: /home/piiithagorus/.local/share/yadm/repo.git/
+      register: yadm_repo_found
+
+    - debug:
+        var: yadm_repo_found
+
+    - name: Clone yadm repo
+      ansible.builtin.shell:
+          cmd: yadm clone {{yadm_clone_url}}
+      when: not yadm_repo_found['stat']['exists']
+
 
     - name: Add yadm pushUrl   
       community.general.git_config:
