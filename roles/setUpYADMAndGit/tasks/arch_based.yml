@@ -1,0 +1,16 @@
+
+- block: 
+    - name: Installing YADM
+      community.general.pacman:
+          name: yadm
+          state: present
+      tags:
+          - install_yadm
+
+- block: 
+    - name: Installing Git
+      community.general.pacman:
+          name: git
+          state: latest 
+      tags:
+          - install_git

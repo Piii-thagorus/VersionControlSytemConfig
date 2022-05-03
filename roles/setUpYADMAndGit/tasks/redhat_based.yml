@@ -1,0 +1,15 @@
+- block: 
+    - name: Installing YADM
+      dnf:
+          name: yadm
+          state: present
+      tags:
+          - install_yadm
+
+- block: 
+    - name: Installing Git
+      dnf:
+          name: git
+          state: latest 
+      tags:
+          - install_git

@@ -1,0 +1,17 @@
+- block: 
+    - name: Installing YADM
+      ansible.builtin.apt:
+          force_apt_get: yes
+          name: yadm
+          state: present
+      tags:
+          - install_yadm
+
+- block: 
+    - name: Installing Git
+      ansible.builtin.apt:
+          force_apt_get: yes
+          name: git
+          state: latest 
+      tags:
+          - install_git
