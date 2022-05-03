@@ -5,16 +5,24 @@
   ansible.builtin.package_facts:
         manager: auto
 
-- block: 
-    - name: Installing YADM
-      ansible.builtin.apt:
-          force_apt_get: yes
-          name: yadm
-          state: present
-      register: yadm_ouptut
-      tags:
-          - install_yadm
+- name: Installing packages for Debian_based
+  include_tasks:
+      file: debian_based.yml
+  when: ansible_os_family == "Debian"
+    
 
+- name: Installing packages for Arch_based 
+  include_tasks:
+      file: redhat_based.yml
+  when: ansible_os_family == "Archlinux"
+
+
+- name: Installing packages for RedHat_based 
+  include_tasks:
+      file: debian_based.yml
+  when: ansible_os_family == "RedHat"
+
+- block: 
     - name: Check if yadm repo exits
       stat:
           path: /home/piiithagorus/.local/share/yadm/repo.git/
@@ -36,19 +44,9 @@
 
 
 - block: 
-    - name: Installing Git
-      ansible.builtin.apt:
-          force_apt_get: yes
-          name: git
-          state: latest 
-      register: git_output
-      tags:
-          - install_git
-
     - name: Configure gitconfig 
       ansible.builtin.template:
          src: gitconfig.j2
          dest: "/home/piiithagorus/.gitconfig"
          force: yes
          mode: 0767
-      when: " 'git' in ansible_facts.packages"
