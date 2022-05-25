@@ -3,7 +3,7 @@
     - name: Installing YADM
       community.general.pacman:
           name: yadm
-          state: present
+          state: latest
       tags:
           - install_yadm
 

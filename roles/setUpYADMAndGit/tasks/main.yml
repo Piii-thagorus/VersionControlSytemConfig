@@ -13,40 +13,34 @@
 
 - name: Installing packages for Arch_based 
   include_tasks:
-      file: redhat_based.yml
+      file: arch_based.yml
   when: ansible_os_family == "Archlinux"
 
 
 - name: Installing packages for RedHat_based 
   include_tasks:
-      file: debian_based.yml
+      file: redhat_based.yml
   when: ansible_os_family == "RedHat"
 
+
 - block: 
-    - name: Check if yadm repo exits
-      stat:
-          path: /home/piiithagorus/.local/share/yadm/repo.git/
-      register: yadm_repo_found
+
+    - name: Make yadm directory
+      ansible.builtin.file:
+         dest: "{{ lookup('env', 'HOME') }}/.local/share/yadm"
+         mode: 0767
 
     - name: Clone yadm repo
-      ansible.builtin.shell:
-          cmd: yadm clone {{yadm_clone_url}}
-      when: not yadm_repo_found['stat']['exists']
-
-
-    - name: Add yadm pushUrl   
-      community.general.git_config:
-            name: remote.origin.pushurl
-            scope: local
-            repo: /home/piiithagorus/.local/share/yadm/repo.git/
-            value: "{{yadm_push_url}}"
-      when: " 'yadm' in ansible_facts.packages"
-
+      ansible.builtin.git:
+          repo: "{{yadm_clone_url}}"
+          accept_hostkey: yes
+          dest: "{{ lookup('env', 'HOME') }}/.local/share/yadm"
+          separate_git_dir: "{{ lookup('env', 'HOME') }}/.local/share/yadm/repo.git"
 
 - block: 
     - name: Configure gitconfig 
       ansible.builtin.template:
          src: gitconfig.j2
-         dest: "/home/piiithagorus/.gitconfig"
+         dest: "{{ lookup('env', 'HOME') }}/.gitconfig"
          force: yes
          mode: 0767
