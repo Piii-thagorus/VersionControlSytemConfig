@@ -24,23 +24,22 @@
 
 
 - block: 
-
     - name: Make yadm directory
       ansible.builtin.file:
-         dest: "{{ lookup('env', 'HOME') }}/.local/share/yadm"
+         dest: "/home/{{user_name}}/.local/share/yadm"
          mode: 0767
 
     - name: Clone yadm repo
       ansible.builtin.git:
           repo: "{{yadm_clone_url}}"
           accept_hostkey: yes
-          dest: "{{ lookup('env', 'HOME') }}/.local/share/yadm"
-          separate_git_dir: "{{ lookup('env', 'HOME') }}/.local/share/yadm/repo.git"
+          dest: "/home/{{user_name}}/.local/share/yadm"
+          separate_git_dir: "/home/{{user_name}}/.local/share/yadm/repo.git"
 
 - block: 
     - name: Configure gitconfig 
       ansible.builtin.template:
          src: gitconfig.j2
-         dest: "{{ lookup('env', 'HOME') }}/.gitconfig"
+         dest: "/home/{{user_name}}/.gitconfig"
          force: yes
          mode: 0767

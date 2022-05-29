@@ -1,6 +1,5 @@
 ---
 # vars file for setUpYADMAndGit
-
 yadm_push_url: https://github.com/Piii-thagorus/dotfiles
 yadm_clone_url: https://github.com/Piii-thagorus/dotfiles.git
 git_user_name: Piii-thagorus
